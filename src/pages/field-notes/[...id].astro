@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('fieldNotes', ({data}) => !data.draft);
+  return notes.map(note => ({ params: { id: note.id }, props: { note } }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+const fmt = (d: Date) => new Intl.DateTimeFormat('en', { year:'numeric', month:'long', day:'numeric' }).format(d);
+---
+<BaseLayout title={`${note.data.title} — imhotep`} description={note.data.description}>
+  <article class="article">
+    <div class="eyebrow">field note / {fmt(note.data.publishedAt)}</div>
+    <h1>{note.data.title}</h1>
+    <p class="lede">{note.data.description}</p>
+    {note.data.originallyWrittenAt && (
+      <p class="eyebrow">originally written {fmt(note.data.originallyWrittenAt)}{note.data.updatedAt ? ` · updated ${fmt(note.data.updatedAt)}` : ''}</p>
+    )}
+    <div class="prose"><Content /></div>
+  </article>
+</BaseLayout>
