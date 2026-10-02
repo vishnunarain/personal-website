@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('fieldNotes', ({ data }) => !data.draft))
+  .sort((a,b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0,4);
+
+const fmt = (d: Date) => new Intl.DateTimeFormat('en', { year:'numeric', month:'short' }).format(d);
+---
+<BaseLayout>
+  <section class="hero">
+    <div class="eyebrow">engineering leadership / systems / product</div>
+    <h1>imhotep</h1>
+    <div class="name">Vishnu Unnikrishnan</div>
+    <p class="statement">I build software, systems, and engineering organisations for complicated domains — with proof in global supply chain, healthcare, and large-scale platforms.</p>
+    <div class="hero-meta">
+      <span>Bangalore / Melbourne</span>
+      <span>15 years building software</span>
+      <span>engineering leader + hands-on builder</span>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="section-head">
+      <div class="eyebrow">01 / selected work</div>
+      <h2>Proof before claims.</h2>
+    </div>
+    <div class="work-list">
+      <article class="work-row">
+        <div class="index">01</div>
+        <div>
+          <h3>Decision systems for global supply chains</h3>
+          <p>Turning disruption, shipments, orders, risk, emissions, and operational noise into calmer decision interfaces.</p>
+        </div>
+        <div class="eyebrow">product systems / architecture / leadership</div>
+      </article>
+      <article class="work-row">
+        <div class="index">02</div>
+        <div>
+          <h3>Platforms that survive scale</h3>
+          <p>Distributed services, event-driven systems, data models, reliability boundaries, and the engineering decisions behind them.</p>
+        </div>
+        <div class="eyebrow">java / kafka / postgres / platform</div>
+      </article>
+      <article class="work-row">
+        <div class="index">03</div>
+        <div>
+          <h3>Healthcare software where failure matters</h3>
+          <p>Building in environments where correctness, usability, traceability, and operational discipline are part of the product.</p>
+        </div>
+        <div class="eyebrow">healthcare / quality / systems</div>
+      </article>
+      <article class="work-row">
+        <div class="index">04</div>
+        <div>
+          <h3>AI-native engineering organisations</h3>
+          <p>Exploring how agents, better context, taste, review systems, and human judgment change the shape of an engineering team.</p>
+        </div>
+        <div class="eyebrow">agents / leadership / operating systems</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="systems">
+    <div class="section-head">
+      <div class="eyebrow">02 / systems</div>
+      <h2>Complexity should move underneath.</h2>
+    </div>
+    <div class="system-grid">
+      <article class="system-card">
+        <div class="diagram network" aria-hidden="true">
+          <i class="node"></i><i class="node"></i><i class="node"></i><i class="node"></i><i class="node"></i>
+        </div>
+        <h3>Propagation</h3>
+        <p>A disruption becomes useful only when its downstream consequences can be understood.</p>
+      </article>
+      <article class="system-card">
+        <div class="diagram calm" aria-hidden="true">
+          <div class="bar" style="width:92%"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+        <h3>Compression</h3>
+        <p>The interface should absorb complexity and return a decision, not simply mirror the backend.</p>
+      </article>
+      <article class="system-card">
+        <div class="diagram flow" aria-hidden="true"><i class="moving"></i></div>
+        <h3>Flow</h3>
+        <p>Most valuable systems are ultimately about moving information, goods, decisions, or responsibility reliably.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div class="eyebrow">03 / field notes</div>
+      <h2>Writing as accumulated evidence.</h2>
+    </div>
+    <div class="notes-list">
+      {notes.map(note => (
+        <a class="note-row" href={`/field-notes/${note.id}/`}>
+          <time>{fmt(note.data.publishedAt)}</time>
+          <div>
+            <h3>{note.data.title}</h3>
+            <p>{note.data.description}</p>
+          </div>
+          <span class="arrow">↗</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
