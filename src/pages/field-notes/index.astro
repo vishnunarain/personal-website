@@ -6,16 +6,37 @@ const notes = (await getCollection('fieldNotes', ({data}) => !data.draft))
   .sort((a,b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 
 const fmt = (d: Date) => new Intl.DateTimeFormat('en', { year:'numeric', month:'short', day:'numeric' }).format(d);
+
+const topicAliases: Record<string, string[]> = {
+  'ai': ['ai','agent','agents','llm','artificial intelligence'],
+  'design': ['design','ux','ui','product design','interface'],
+  'supply-chain': ['supply chain','shipping','logistics','shipment','visibility'],
+  'healthcare': ['healthcare','health','medical'],
+  'engineering': ['engineering','systems','architecture','platform','java','frontend','backend']
+};
+
+const normalise = (s: string) => s.toLowerCase().trim();
 ---
 <BaseLayout title="field notes — imhotep">
-  <section class="section">
+  <section class="section field-notes-page">
     <div class="section-head">
       <div class="eyebrow">field notes</div>
       <h2>Systems, decisions, and what changed my mind.</h2>
     </div>
-    <div class="notes-list">
+
+    <div class="topic-filter-status" data-topic-status hidden>
+      showing <strong data-topic-name></strong>
+      <a href="/field-notes">clear</a>
+    </div>
+
+    <div class="notes-list" data-notes-list>
       {notes.map(note => (
-        <a class="note-row" href={`/field-notes/${note.id}/`}>
+        <a
+          class="note-row"
+          href={`/field-notes/${note.id}/`}
+          data-note
+          data-tags={note.data.tags.map(normalise).join('|')}
+        >
           <time>{fmt(note.data.publishedAt)}</time>
           <div>
             <h3>{note.data.title}</h3>
@@ -25,5 +46,37 @@ const fmt = (d: Date) => new Intl.DateTimeFormat('en', { year:'numeric', month:'
         </a>
       ))}
     </div>
+
+    <div class="topic-empty" data-topic-empty hidden>
+      Nothing published in this thread yet. That is a useful gap, not an empty page.
+    </div>
   </section>
+
+  <script is:inline define:vars={{ topicAliases }}>
+    (() => {
+      const topic = new URLSearchParams(window.location.search).get('topic');
+      if (!topic) return;
+
+      const aliases = topicAliases[topic] || [topic];
+      const notes = Array.from(document.querySelectorAll('[data-note]'));
+      let visible = 0;
+
+      notes.forEach((note) => {
+        const tags = (note.dataset.tags || '').split('|');
+        const matches = tags.some((tag) => aliases.some((alias) => tag.includes(alias)));
+        note.hidden = !matches;
+        if (matches) visible += 1;
+      });
+
+      const status = document.querySelector('[data-topic-status]');
+      const name = document.querySelector('[data-topic-name]');
+      if (status && name) {
+        name.textContent = topic.replace('-', ' ');
+        status.hidden = false;
+      }
+
+      const empty = document.querySelector('[data-topic-empty]');
+      if (empty) empty.hidden = visible > 0;
+    })();
+  </script>
 </BaseLayout>
