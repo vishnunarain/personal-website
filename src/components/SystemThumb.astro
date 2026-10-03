@@ -1,26 +1,26 @@
 ---
 const { type = 'supply' } = Astro.props;
 ---
-<div class="thumb" aria-hidden="true">
+<div class={`thumb thumb-${type}`} aria-hidden="true">
   <div class="grid"></div>
   {type === 'supply' && <>
-    <div class="path" style="left:13%;top:30%;width:52%;transform:rotate(10deg)"></div>
+    <div class="path path-accent" style="left:13%;top:30%;width:52%;transform:rotate(10deg)"></div>
     <div class="path" style="left:45%;top:39%;width:38%;transform:rotate(25deg)"></div>
-    <span class="node" style="left:12%;top:28%"></span>
-    <span class="node pulse" style="left:44%;top:37%"></span>
+    <span class="node node-accent" style="left:12%;top:28%"></span>
+    <span class="node pulse node-accent" style="left:44%;top:37%"></span>
     <span class="node" style="left:79%;top:58%"></span>
-    <div class="slide" style="position:absolute;right:10%;bottom:14%;width:34%;height:28%;border:1px solid var(--ink);background:var(--paper);padding:10px;font-size:10px">signal → decision</div>
+    <div class="slide thumb-caption">signal → decision</div>
   </>}
   {type === 'health' && <>
-    <div class="fade" style="position:absolute;left:12%;top:18%;width:24%;height:56%;border:1px solid var(--ink)"></div>
-    <div class="path" style="left:38%;top:46%;width:24%"></div>
-    <div class="fade" style="position:absolute;right:12%;top:28%;width:25%;height:34%;border:1px solid var(--ink);animation-delay:.7s"></div>
-    <span class="node pulse" style="left:50%;top:44%"></span>
+    <div class="fade health-panel" style="left:12%;top:18%;width:24%;height:56%"></div>
+    <div class="path path-accent" style="left:38%;top:46%;width:24%"></div>
+    <div class="fade health-panel" style="right:12%;top:28%;width:25%;height:34%;animation-delay:.7s"></div>
+    <span class="node pulse node-accent" style="left:50%;top:44%"></span>
   </>}
   {type === 'platform' && <>
-    <div class="slide" style="position:absolute;left:12%;top:20%;width:20%;height:20%;border:1px solid var(--ink)"></div>
-    <div class="slide" style="position:absolute;left:40%;top:20%;width:20%;height:20%;border:1px solid var(--ink);animation-delay:.4s"></div>
-    <div class="slide" style="position:absolute;left:68%;top:20%;width:20%;height:20%;border:1px solid var(--ink);animation-delay:.8s"></div>
-    <div style="position:absolute;left:12%;right:12%;bottom:20%;height:24%;border:1px solid var(--ink);background:var(--paper)"></div>
+    <div class="slide platform-block" style="left:12%;top:20%;animation-delay:0s"></div>
+    <div class="slide platform-block" style="left:40%;top:20%;animation-delay:.4s"></div>
+    <div class="slide platform-block" style="left:68%;top:20%;animation-delay:.8s"></div>
+    <div class="platform-shell"></div>
   </>}
 </div>
