@@ -1,111 +1,130 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SystemThumb from '../components/SystemThumb.astro';
 import { getCollection } from 'astro:content';
 
 const notes = (await getCollection('fieldNotes', ({ data }) => !data.draft))
   .sort((a,b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
-  .slice(0,4);
+  .slice(0,5);
 
-const fmt = (d: Date) => new Intl.DateTimeFormat('en', { year:'numeric', month:'short' }).format(d);
+const fmt = (d: Date) => new Intl.DateTimeFormat('en', {year:'numeric', month:'short'}).format(d);
 ---
 <BaseLayout>
-  <section class="hero">
-    <div class="eyebrow">engineering leadership / systems / product</div>
-    <h1>imhotep</h1>
-    <div class="name">Vishnu Unnikrishnan</div>
-    <p class="statement">I build software, systems, and engineering organisations for complicated domains — with proof in global supply chain, healthcare, and large-scale platforms.</p>
-    <div class="hero-meta">
-      <span>Bangalore / Melbourne</span>
-      <span>15 years building software</span>
-      <span>engineering leader + hands-on builder</span>
+  <section class="intro shell">
+    <div class="intro-kicker">Vishnu Unnikrishnan</div>
+    <h1>Engineering leader who still likes getting close to the system.</h1>
+    <p class="intro-deck">
+      I build products, platforms, and engineering teams for domains where complexity is real —
+      especially <span class="accent accent-supply">global supply chains</span>,
+      <span class="accent accent-health">healthcare</span>, and
+      <span class="accent accent-systems">high-scale software systems</span>.
+    </p>
+    <div class="intro-links">
+      <a href="/#work">See proof of work →</a>
+      <a href="/field-notes">Read field notes →</a>
     </div>
   </section>
 
-  <section class="section" id="work">
-    <div class="section-head">
-      <div class="eyebrow">01 / selected work</div>
-      <h2>Proof before claims.</h2>
-    </div>
-    <div class="work-list">
-      <article class="work-row">
-        <div class="index">01</div>
+  <section class="section shell rule compact-section">
+    <div class="section-label">Where I create leverage</div>
+    <div class="leverage-list">
+      <article class="leverage-row">
+        <div class="leverage-num">01</div>
         <div>
-          <h3>Decision systems for global supply chains</h3>
-          <p>Turning disruption, shipments, orders, risk, emissions, and operational noise into calmer decision interfaces.</p>
+          <h2>Turn operational complexity into decisions.</h2>
+          <p>For products with fragmented data, workflows, and stakeholders: reduce what users need to understand before they can act.</p>
         </div>
-        <div class="eyebrow">product systems / architecture / leadership</div>
+        <div class="outcome">Possible impact<br><strong>faster decisions · less operational friction</strong></div>
       </article>
-      <article class="work-row">
-        <div class="index">02</div>
+      <article class="leverage-row">
+        <div class="leverage-num">02</div>
         <div>
-          <h3>Platforms that survive scale</h3>
-          <p>Distributed services, event-driven systems, data models, reliability boundaries, and the engineering decisions behind them.</p>
+          <h2>Build platforms that can grow without becoming immovable.</h2>
+          <p>Clarify boundaries, contracts, data flows, and frontend architecture so teams can evolve parts independently.</p>
         </div>
-        <div class="eyebrow">java / kafka / postgres / platform</div>
+        <div class="outcome">Possible impact<br><strong>lower change cost · safer scale</strong></div>
       </article>
-      <article class="work-row">
-        <div class="index">03</div>
+      <article class="leverage-row">
+        <div class="leverage-num">03</div>
         <div>
-          <h3>Healthcare software where failure matters</h3>
-          <p>Building in environments where correctness, usability, traceability, and operational discipline are part of the product.</p>
+          <h2>Raise the engineering system, not just the code quality.</h2>
+          <p>Quality bars, delegation, feedback loops, AI-native workflows, and technical judgment that make good work repeatable.</p>
         </div>
-        <div class="eyebrow">healthcare / quality / systems</div>
-      </article>
-      <article class="work-row">
-        <div class="index">04</div>
-        <div>
-          <h3>AI-native engineering organisations</h3>
-          <p>Exploring how agents, better context, taste, review systems, and human judgment change the shape of an engineering team.</p>
-        </div>
-        <div class="eyebrow">agents / leadership / operating systems</div>
+        <div class="outcome">Possible impact<br><strong>higher throughput · stronger ownership</strong></div>
       </article>
     </div>
   </section>
 
-  <section class="section" id="systems">
-    <div class="section-head">
-      <div class="eyebrow">02 / systems</div>
-      <h2>Complexity should move underneath.</h2>
-    </div>
-    <div class="system-grid">
-      <article class="system-card">
-        <div class="diagram network" aria-hidden="true">
-          <i class="node"></i><i class="node"></i><i class="node"></i><i class="node"></i><i class="node"></i>
+  <section class="section shell rule compact-section" id="work">
+    <div class="section-label">Proof worth discussing</div>
+    <div class="proof-list">
+      <article class="proof-row">
+        <div class="proof-meta"><span class="dot dot-supply"></span>Supply chain</div>
+        <div class="proof-copy">
+          <h2>Decision systems for global operations</h2>
+          <p>Product and platform work across visibility, risk, emissions, reporting, and operational decision-making — where multiple systems have to feel like one coherent product.</p>
+          <a href="/#work">What I built and what changed →</a>
         </div>
-        <h3>Propagation</h3>
-        <p>A disruption becomes useful only when its downstream consequences can be understood.</p>
+        <SystemThumb type="supply" />
       </article>
-      <article class="system-card">
-        <div class="diagram calm" aria-hidden="true">
-          <div class="bar" style="width:92%"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <article class="proof-row">
+        <div class="proof-meta"><span class="dot dot-health"></span>Healthcare</div>
+        <div class="proof-copy">
+          <h2>Software where correctness has human consequences</h2>
+          <p>Experience building healthcare systems shaped how I think about reliability, clarity, constraints, and the cost of getting an interface or workflow wrong.</p>
+          <a href="/identity">See the thread through the work →</a>
         </div>
-        <h3>Compression</h3>
-        <p>The interface should absorb complexity and return a decision, not simply mirror the backend.</p>
+        <SystemThumb type="health" />
       </article>
-      <article class="system-card">
-        <div class="diagram flow" aria-hidden="true"><i class="moving"></i></div>
-        <h3>Flow</h3>
-        <p>Most valuable systems are ultimately about moving information, goods, decisions, or responsibility reliably.</p>
+      <article class="proof-row">
+        <div class="proof-meta"><span class="dot dot-systems"></span>Systems</div>
+        <div class="proof-copy">
+          <h2>Architecture that survives the next order of magnitude</h2>
+          <p>Distributed systems, APIs, event flows, PostgreSQL, Kafka, frontend federation, and the trade-offs required to keep complexity proportional to actual scale.</p>
+          <a href="/#systems">Explore systems thinking →</a>
+        </div>
+        <SystemThumb type="platform" />
       </article>
     </div>
   </section>
 
-  <section class="section">
-    <div class="section-head">
-      <div class="eyebrow">03 / field notes</div>
-      <h2>Writing as accumulated evidence.</h2>
+  <section class="section shell rule compact-section split-section">
+    <div>
+      <div class="section-label">How I tend to think</div>
+      <div class="beliefs">
+        <p><strong>Make complexity earn its place.</strong> The sophisticated solution is not automatically the senior one.</p>
+        <p><strong>Products should expose decisions, not organizational structure.</strong> Users should not have to understand your service boundaries.</p>
+        <p><strong>Engineering leadership is a system design problem too.</strong> Incentives, context, feedback, and ownership are part of the architecture.</p>
+        <p><strong>Taste compounds.</strong> Teams get better when they learn to articulate why something is clear, useful, and well made.</p>
+      </div>
     </div>
-    <div class="notes-list">
-      {notes.map(note => (
-        <a class="note-row" href={`/field-notes/${note.id}/`}>
-          <time>{fmt(note.data.publishedAt)}</time>
-          <div>
-            <h3>{note.data.title}</h3>
-            <p>{note.data.description}</p>
-          </div>
-          <span class="arrow">↗</span>
-        </a>
-      ))}
+    <aside class="now-block">
+      <div class="section-label">Now</div>
+      <p>Exploring AI-native engineering workflows, calmer decision interfaces, and ways to make engineering teams more capable without adding ceremony.</p>
+      <a href="/identity">More about how I work →</a>
+    </aside>
+  </section>
+
+  <section class="section shell rule compact-section">
+    <div class="section-label">Field notes</div>
+    <div class="writing-list">
+      {notes.map((note) => <a class="writing-row" href={`/field-notes/${note.id}/`}>
+        <div class="writing-date">{fmt(note.data.originallyWrittenAt ?? note.data.publishedAt)}</div>
+        <div><h3>{note.data.title}</h3><p>{note.data.description}</p></div>
+        <div class="writing-tag">{note.data.tags[0] ?? 'note'}</div>
+      </a>)}
+    </div>
+  </section>
+
+  <section class="section shell rule hire-section">
+    <div class="section-label">If you're hiring</div>
+    <div class="hire-copy">
+      <h2>I’m most useful when the problem is bigger than a feature.</h2>
+      <p>Complex domain. Multiple teams. Important customers. Architecture beginning to strain. Product quality that matters. A mandate to improve both the system and the way the team builds it.</p>
+      <div class="intro-links">
+        <a href="/#work">Inspect the work →</a>
+        <a href="/identity">How I lead →</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
