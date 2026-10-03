@@ -5,65 +5,46 @@ import { getCollection } from 'astro:content';
 
 const notes = (await getCollection('fieldNotes', ({ data }) => !data.draft))
   .sort((a,b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
-  .slice(0,5);
+  .slice(0,6);
 
 const fmt = (d: Date) => new Intl.DateTimeFormat('en', {year:'numeric', month:'short'}).format(d);
 ---
 <BaseLayout>
-  <section class="intro shell">
-    <div class="intro-kicker">Vishnu Unnikrishnan</div>
-    <h1>Engineering leader who still likes getting close to the system.</h1>
-    <p class="intro-deck">
-      I build products, platforms, and engineering teams for domains where complexity is real —
-      especially <span class="accent accent-supply">global supply chains</span>,
-      <span class="accent accent-health">healthcare</span>, and
-      <span class="accent accent-systems">high-scale software systems</span>.
-    </p>
-    <div class="intro-links">
-      <a href="/#work">See proof of work →</a>
-      <a href="/field-notes">Read field notes →</a>
-    </div>
-  </section>
-
-  <section class="section shell rule compact-section">
-    <div class="section-label">Where I create leverage</div>
-    <div class="leverage-list">
-      <article class="leverage-row">
-        <div class="leverage-num">01</div>
-        <div>
-          <h2>Turn operational complexity into decisions.</h2>
-          <p>For products with fragmented data, workflows, and stakeholders: reduce what users need to understand before they can act.</p>
-        </div>
-        <div class="outcome">Possible impact<br><strong>faster decisions · less operational friction</strong></div>
-      </article>
-      <article class="leverage-row">
-        <div class="leverage-num">02</div>
-        <div>
-          <h2>Build platforms that can grow without becoming immovable.</h2>
-          <p>Clarify boundaries, contracts, data flows, and frontend architecture so teams can evolve parts independently.</p>
-        </div>
-        <div class="outcome">Possible impact<br><strong>lower change cost · safer scale</strong></div>
-      </article>
-      <article class="leverage-row">
-        <div class="leverage-num">03</div>
-        <div>
-          <h2>Raise the engineering system, not just the code quality.</h2>
-          <p>Quality bars, delegation, feedback loops, AI-native workflows, and technical judgment that make good work repeatable.</p>
-        </div>
-        <div class="outcome">Possible impact<br><strong>higher throughput · stronger ownership</strong></div>
-      </article>
+  <section class="index-open shell">
+    <div class="terminal-line"><span class="pyramid-cursor" aria-hidden="true"></span><span>index / selected work + notes</span></div>
+    <div class="index-grid">
+      <a href="/#work" class="index-link">
+        <span class="index-code">01</span>
+        <span>work</span>
+        <span class="index-desc">systems, products, decisions</span>
+      </a>
+      <a href="/field-notes" class="index-link">
+        <span class="index-code">02</span>
+        <span>field notes</span>
+        <span class="index-desc">writing, experiments, unfinished thinking</span>
+      </a>
+      <a href="/#systems" class="index-link">
+        <span class="index-code">03</span>
+        <span>systems</span>
+        <span class="index-desc">architecture, scale, operating models</span>
+      </a>
+      <a href="/identity" class="index-link">
+        <span class="index-code">04</span>
+        <span>about</span>
+        <span class="index-desc">Vishnu, briefly</span>
+      </a>
     </div>
   </section>
 
   <section class="section shell rule compact-section" id="work">
-    <div class="section-label">Proof worth discussing</div>
+    <div class="section-label stepped-label"><span>01</span> selected work</div>
     <div class="proof-list">
       <article class="proof-row">
         <div class="proof-meta"><span class="dot dot-supply"></span>Supply chain</div>
         <div class="proof-copy">
           <h2>Decision systems for global operations</h2>
-          <p>Product and platform work across visibility, risk, emissions, reporting, and operational decision-making — where multiple systems have to feel like one coherent product.</p>
-          <a href="/#work">What I built and what changed →</a>
+          <p>Work across visibility, risk, emissions, reporting, and operational decision-making — where multiple systems have to feel like one coherent product.</p>
+          <a href="/#work">open case →</a>
         </div>
         <SystemThumb type="supply" />
       </article>
@@ -71,42 +52,35 @@ const fmt = (d: Date) => new Intl.DateTimeFormat('en', {year:'numeric', month:'s
         <div class="proof-meta"><span class="dot dot-health"></span>Healthcare</div>
         <div class="proof-copy">
           <h2>Software where correctness has human consequences</h2>
-          <p>Experience building healthcare systems shaped how I think about reliability, clarity, constraints, and the cost of getting an interface or workflow wrong.</p>
-          <a href="/identity">See the thread through the work →</a>
+          <p>Experience in healthcare shaped how I think about reliability, clarity, constraints, and the cost of getting a workflow wrong.</p>
+          <a href="/identity">trace the work →</a>
         </div>
         <SystemThumb type="health" />
       </article>
-      <article class="proof-row">
+      <article class="proof-row" id="systems">
         <div class="proof-meta"><span class="dot dot-systems"></span>Systems</div>
         <div class="proof-copy">
           <h2>Architecture that survives the next order of magnitude</h2>
           <p>Distributed systems, APIs, event flows, PostgreSQL, Kafka, frontend federation, and the trade-offs required to keep complexity proportional to actual scale.</p>
-          <a href="/#systems">Explore systems thinking →</a>
+          <a href="/identity">system notes →</a>
         </div>
         <SystemThumb type="platform" />
       </article>
     </div>
   </section>
 
-  <section class="section shell rule compact-section split-section">
-    <div>
-      <div class="section-label">How I tend to think</div>
-      <div class="beliefs">
-        <p><strong>Make complexity earn its place.</strong> The sophisticated solution is not automatically the senior one.</p>
-        <p><strong>Products should expose decisions, not organizational structure.</strong> Users should not have to understand your service boundaries.</p>
-        <p><strong>Engineering leadership is a system design problem too.</strong> Incentives, context, feedback, and ownership are part of the architecture.</p>
-        <p><strong>Taste compounds.</strong> Teams get better when they learn to articulate why something is clear, useful, and well made.</p>
-      </div>
+  <section class="section shell rule compact-section">
+    <div class="section-label stepped-label"><span>02</span> working principles</div>
+    <div class="tui-principles">
+      <div class="tui-row"><span class="tui-prompt">▲</span><strong>Make complexity earn its place.</strong><span>The sophisticated solution is not automatically the senior one.</span></div>
+      <div class="tui-row"><span class="tui-prompt">▲</span><strong>Expose decisions, not org structure.</strong><span>Users should not have to understand your service boundaries.</span></div>
+      <div class="tui-row"><span class="tui-prompt">▲</span><strong>Leadership is part of the system.</strong><span>Context, feedback, ownership, and incentives shape engineering output.</span></div>
+      <div class="tui-row"><span class="tui-prompt">▲</span><strong>Taste compounds.</strong><span>Teams improve when they can explain why something is clear and useful.</span></div>
     </div>
-    <aside class="now-block">
-      <div class="section-label">Now</div>
-      <p>Exploring AI-native engineering workflows, calmer decision interfaces, and ways to make engineering teams more capable without adding ceremony.</p>
-      <a href="/identity">More about how I work →</a>
-    </aside>
   </section>
 
   <section class="section shell rule compact-section">
-    <div class="section-label">Field notes</div>
+    <div class="section-label stepped-label"><span>03</span> field notes</div>
     <div class="writing-list">
       {notes.map((note) => <a class="writing-row" href={`/field-notes/${note.id}/`}>
         <div class="writing-date">{fmt(note.data.originallyWrittenAt ?? note.data.publishedAt)}</div>
@@ -116,15 +90,11 @@ const fmt = (d: Date) => new Intl.DateTimeFormat('en', {year:'numeric', month:'s
     </div>
   </section>
 
-  <section class="section shell rule hire-section">
-    <div class="section-label">If you're hiring</div>
-    <div class="hire-copy">
-      <h2>I’m most useful when the problem is bigger than a feature.</h2>
-      <p>Complex domain. Multiple teams. Important customers. Architecture beginning to strain. Product quality that matters. A mandate to improve both the system and the way the team builds it.</p>
-      <div class="intro-links">
-        <a href="/#work">Inspect the work →</a>
-        <a href="/identity">How I lead →</a>
-      </div>
+  <section class="section shell rule compact-section closing-index">
+    <div class="section-label stepped-label"><span>04</span> current thread</div>
+    <div class="closing-grid">
+      <p>AI-native engineering workflows, calmer decision interfaces, and ways to make engineering teams more capable without adding ceremony.</p>
+      <a href="/identity">context →</a>
     </div>
   </section>
 </BaseLayout>
