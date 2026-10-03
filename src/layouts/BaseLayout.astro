@@ -6,8 +6,8 @@ interface Props {
   description?: string;
 }
 const {
-  title = 'imhotep — Vishnu Unnikrishnan',
-  description = 'Vishnu Unnikrishnan — engineering leader and systems builder across supply chain, healthcare, and scalable software.'
+  title = 'Vishnu Unnikrishnan — Engineering Leader',
+  description = 'Engineering leader and systems builder across supply chain, healthcare, and scalable software.'
 } = Astro.props;
 ---
 <!doctype html>
@@ -16,28 +16,36 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f3ec" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
   <body>
-    <div class="shell">
-      <header class="site-header">
-        <a class="wordmark" href="/">imhotep</a>
-        <nav aria-label="Primary">
-          <a href="/#work">work</a>
-          <a href="/field-notes">field notes</a>
-          <a href="/#systems">systems</a>
-          <a href="/identity">identity</a>
-        </nav>
-      </header>
-      <main><slot /></main>
-    </div>
-    <footer>
-      <div class="shell footer-inner">
-        <span>© {new Date().getFullYear()} Vishnu Unnikrishnan</span>
-        <span>built as an evolving field notebook</span>
+    <div class="header-wrap">
+      <div class="shell">
+        <header class="site-header">
+          <a class="brand" href="/">imhotep</a>
+          <nav class="nav" aria-label="Primary">
+            <a href="/#work">work</a>
+            <a href="/field-notes">writing</a>
+            <a href="/#systems">systems</a>
+            <a href="/identity">about Vishnu</a>
+          </nav>
+        </header>
       </div>
-      <div class="signature" aria-label="Imhotep hieroglyphic signature">𓇋𓅓𓊵𓏏𓊪</div>
-    </footer>
+    </div>
+    <main><slot /></main>
+    <div class="shell">
+      <footer class="footer">
+        <div class="footer-main">
+          <div>
+            <div class="footer-person">Vishnu Unnikrishnan</div>
+            <div class="footer-role">engineering leadership · systems · product</div>
+          </div>
+          <div class="footer-links"><a href="/#work">work</a><a href="/field-notes">writing</a><a href="/identity">about</a></div>
+        </div>
+        <div class="hieroglyph-signature" title="Imhotep signature" aria-label="Imhotep hieroglyphic signature">𓇋𓇋𓅓𓊵𓏏𓊪</div>
+      </footer>
+    </div>
   </body>
 </html>
