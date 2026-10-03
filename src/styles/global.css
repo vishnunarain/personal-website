@@ -147,3 +147,162 @@ a:hover { text-decoration: underline; text-underline-offset: 4px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
 }
+
+
+/* imhotep index language: pyramid + restrained TUI */
+.brand { display:inline-flex; align-items:center; gap:9px; }
+.brand-mark {
+  width: 14px;
+  height: 12px;
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+.brand-mark::before,
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 5px solid var(--ink);
+}
+.brand-mark::before { top: 0; }
+.brand-mark::after { top: 5px; border-left-width: 6px; border-right-width: 6px; border-bottom-width: 6px; opacity: .58; }
+
+.index-open {
+  padding-block: clamp(52px, 7vw, 88px) clamp(64px, 8vw, 104px);
+}
+.terminal-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+  color: var(--stone);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.pyramid-cursor {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 8px solid var(--gold);
+  opacity: .88;
+}
+.index-grid {
+  border-top: 1px solid var(--line-dark);
+}
+.index-link {
+  display: grid;
+  grid-template-columns: 54px minmax(160px, .55fr) 1fr;
+  gap: 24px;
+  align-items: baseline;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left 160ms ease, background 160ms ease;
+}
+.index-link:hover {
+  text-decoration: none;
+  padding-left: 10px;
+  background: linear-gradient(90deg, rgba(176,138,62,.08), transparent 42%);
+}
+.index-link::before {
+  content: "";
+  position: absolute;
+}
+.index-code {
+  color: var(--stone);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+}
+.index-link > span:nth-child(2) {
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.2vw, 42px);
+  letter-spacing: -.035em;
+}
+.index-desc {
+  color: var(--stone);
+  font-size: 12px;
+}
+
+.stepped-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.stepped-label::before {
+  content: "";
+  width: 18px;
+  height: 12px;
+  background:
+    linear-gradient(to right, var(--gold) 0 6px, transparent 6px) 0 8px / 18px 4px no-repeat,
+    linear-gradient(to right, var(--gold) 0 10px, transparent 10px) 4px 4px / 14px 4px no-repeat,
+    linear-gradient(to right, var(--gold) 0 6px, transparent 6px) 8px 0 / 10px 4px no-repeat;
+  opacity: .72;
+}
+.stepped-label span {
+  color: var(--gold);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.tui-principles {
+  border-top: 1px solid var(--line-dark);
+}
+.tui-row {
+  display: grid;
+  grid-template-columns: 28px minmax(240px, .8fr) 1fr;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+}
+.tui-prompt {
+  color: var(--gold);
+  font-size: 9px;
+  transform: translateY(-1px);
+}
+.tui-row strong {
+  font-family: var(--serif);
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 500;
+  letter-spacing: -.025em;
+}
+.tui-row > span:last-child {
+  color: var(--stone);
+  font-size: 13px;
+}
+
+.closing-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 760px) auto;
+  gap: 40px;
+  align-items: end;
+}
+.closing-grid p {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -.035em;
+}
+.closing-grid a {
+  font-size: 12px;
+  font-weight: 650;
+}
+
+a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--paper), 0 0 0 2px var(--gold);
+}
+
+@media (max-width: 700px) {
+  .index-link { grid-template-columns: 34px 1fr; gap: 12px; }
+  .index-desc { grid-column: 2; }
+  .tui-row { grid-template-columns: 18px 1fr; }
+  .tui-row > span:last-child { grid-column: 2; }
+  .closing-grid { grid-template-columns: 1fr; gap: 18px; }
+}
