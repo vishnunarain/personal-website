@@ -4,94 +4,116 @@ import SystemThumb from '../components/SystemThumb.astro';
 import { getCollection } from 'astro:content';
 
 const notes = (await getCollection('fieldNotes', ({ data }) => !data.draft))
-  .sort((a,b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
-  .slice(0,6);
+  .sort((a,b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 
+const recentNotes = notes.slice(0,5);
 const fmt = (d: Date) => new Intl.DateTimeFormat('en', {year:'numeric', month:'short'}).format(d);
 ---
 <BaseLayout>
-  <section class="workbench shell">
-    <div class="wb-kicker">selected work / field notes / working models</div>
-    <div class="wb-axis" aria-hidden="true">
-      <span>01</span><span>02</span><span>03</span><span>04</span>
-    </div>
-    <div class="wb-title">
-      <span>systems</span>
-      <span>decisions</span>
-      <span>interfaces</span>
-    </div>
-    <div class="wb-note">
-      <span class="pyramid-cursor"></span>
-      a reading surface, not a résumé
-    </div>
-  </section>
-
-  <section class="shell work-terraces" id="work">
-    <article class="terrace terrace-a">
-      <div class="terrace-meta"><span class="dot dot-supply"></span><span>01 / supply chain</span></div>
-      <div class="terrace-copy">
-        <h2>Decision systems for global operations</h2>
-        <p>Visibility, disruption, risk, emissions, reporting, and the product architecture required to make many systems feel like one.</p>
-        <a href="/#work">open case →</a>
+  <div class="reading-room shell">
+    <section class="feature-artifact">
+      <div class="artifact-label">Featured work</div>
+      <div class="artifact-main">
+        <div class="artifact-copy">
+          <div class="artifact-meta">Supply chain / product systems / architecture</div>
+          <h1>Making operational complexity legible.</h1>
+          <p>How visibility, risk, emissions, reporting, and shipment state can become one coherent decision surface instead of a collection of product boundaries.</p>
+          <a href="/#deep-dives">Read the case →</a>
+        </div>
+        <div class="artifact-visual">
+          <SystemThumb type="supply" />
+        </div>
       </div>
-      <div class="terrace-thumb"><SystemThumb type="supply" /></div>
-    </article>
+    </section>
 
-    <article class="terrace terrace-b">
-      <div class="terrace-meta"><span class="dot dot-health"></span><span>02 / healthcare</span></div>
-      <div class="terrace-copy">
-        <h2>Software where correctness has human consequences</h2>
-        <p>Healthcare work shaped how I think about reliability, clarity, workflow design, and the cost of ambiguity.</p>
-        <a href="/identity">trace the thread →</a>
+    <section class="room-grid">
+      <div class="room-lane" id="deep-dives">
+        <div class="lane-head">
+          <span>Deep dives</span>
+          <span>03</span>
+        </div>
+
+        <article class="lane-item lane-item-large">
+          <div class="lane-type">Case study</div>
+          <h2>Decision systems for global operations</h2>
+          <p>Designing across disruptions, shipments, orders, risk, emissions, and reporting without forcing the user to understand the machinery underneath.</p>
+          <a href="/#work">open →</a>
+        </article>
+
+        <article class="lane-item">
+          <div class="lane-type">System note</div>
+          <h3>Architecture that survives the next order of magnitude</h3>
+          <p>Where boundaries, caching, orchestration, and data ownership start to matter.</p>
+          <a href="/identity">open →</a>
+        </article>
+
+        <article class="lane-item">
+          <div class="lane-type">Retrospective</div>
+          <h3>What healthcare software taught me about correctness</h3>
+          <p>Why clarity, traceability, and operational discipline are product concerns.</p>
+          <a href="/identity">open →</a>
+        </article>
       </div>
-      <div class="terrace-thumb"><SystemThumb type="health" /></div>
-    </article>
 
-    <article class="terrace terrace-c" id="systems">
-      <div class="terrace-meta"><span class="dot dot-systems"></span><span>03 / systems</span></div>
-      <div class="terrace-copy">
-        <h2>Architecture that survives the next order of magnitude</h2>
-        <p>Distributed systems, APIs, event flows, data models, frontend federation, and the decisions that keep complexity proportional to scale.</p>
-        <a href="/identity">system notes →</a>
+      <div class="room-lane">
+        <div class="lane-head">
+          <span>Field notes</span>
+          <a href="/field-notes">all</a>
+        </div>
+        {recentNotes.map((note) => (
+          <a class="note-line" href={`/field-notes/${note.id}/`}>
+            <div class="note-line-date">{fmt(note.data.originallyWrittenAt ?? note.data.publishedAt)}</div>
+            <div>
+              <h3>{note.data.title}</h3>
+              <p>{note.data.description}</p>
+            </div>
+          </a>
+        ))}
       </div>
-      <div class="terrace-thumb"><SystemThumb type="platform" /></div>
-    </article>
-  </section>
 
-  <section class="shell cross-section">
-    <div class="cross-label">working principles</div>
-    <div class="principle-map">
-      <div class="principle p1"><span>▲</span><strong>Make complexity earn its place.</strong><p>The sophisticated solution is not automatically the senior one.</p></div>
-      <div class="principle p2"><span>▲</span><strong>Expose decisions, not org structure.</strong><p>Users should not need to understand service boundaries.</p></div>
-      <div class="principle p3"><span>▲</span><strong>Leadership is part of the system.</strong><p>Context, feedback, ownership, and incentives shape output.</p></div>
-      <div class="principle p4"><span>▲</span><strong>Taste compounds.</strong><p>Teams improve when they can explain why something is clear and useful.</p></div>
-    </div>
-  </section>
+      <div class="room-lane">
+        <div class="lane-head">
+          <span>On the bench</span>
+          <span>current</span>
+        </div>
 
-  <section class="shell reading-map">
-    <div class="reading-head">
-      <div>field notes</div>
-      <a href="/field-notes">all notes →</a>
-    </div>
-    <div class="reading-canvas">
-      {notes.map((note, i) => (
-        <a class={`note-card note-${i+1}`} href={`/field-notes/${note.id}/`}>
-          <div class="note-topline"><span>{fmt(note.data.originallyWrittenAt ?? note.data.publishedAt)}</span><span>{note.data.tags[0] ?? 'note'}</span></div>
-          <h3>{note.data.title}</h3>
-          <p>{note.data.description}</p>
-        </a>
-      ))}
-    </div>
-  </section>
+        <article class="bench-item">
+          <div class="bench-tag">AI engineering</div>
+          <h3>Growing an AI intern into an engineer</h3>
+          <p>Context, review, task design, memory, and the boundary between delegation and abdication.</p>
+        </article>
 
-  <section class="shell end-cap">
-    <div class="end-cap-mark" aria-hidden="true">
-      <span></span><span></span><span></span>
-    </div>
-    <div class="end-cap-copy">
-      <span>current thread</span>
-      <p>AI-native engineering workflows, calmer decision interfaces, and stronger engineering systems with less ceremony.</p>
-    </div>
-    <a href="/identity">context →</a>
-  </section>
+        <article class="bench-item">
+          <div class="bench-tag">Interfaces</div>
+          <h3>Calm decision surfaces</h3>
+          <p>How much operational complexity can a product absorb before the user has to see it?</p>
+        </article>
+
+        <article class="bench-item">
+          <div class="bench-tag">Teams</div>
+          <h3>Building taste as an engineering capability</h3>
+          <p>Shared vocabulary, critique, customer framing, and why quality becomes cultural.</p>
+        </article>
+
+        <article class="bench-item bench-item-visual">
+          <SystemThumb type="platform" />
+        </article>
+      </div>
+    </section>
+
+    <section class="archive-index">
+      <div class="archive-head">
+        <span>Browse the archive</span>
+        <span>by thread</span>
+      </div>
+      <div class="archive-links">
+        <a href="/field-notes">systems <span>→</span></a>
+        <a href="/field-notes">product design <span>→</span></a>
+        <a href="/field-notes">engineering leadership <span>→</span></a>
+        <a href="/field-notes">AI + agents <span>→</span></a>
+        <a href="/field-notes">supply chain <span>→</span></a>
+        <a href="/field-notes">healthcare <span>→</span></a>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
