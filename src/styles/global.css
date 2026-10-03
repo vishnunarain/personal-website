@@ -1242,3 +1242,413 @@ a:focus-visible {
     display: none;
   }
 }
+
+
+/* v0.9 — unified interaction personality */
+:root {
+  --motion-fast: 140ms;
+  --motion-mid: 220ms;
+  --motion-slow: 360ms;
+  --ease-quiet: cubic-bezier(.2,.7,.2,1);
+  --ease-drift: cubic-bezier(.22,1,.36,1);
+  --hover-wash: rgba(255,255,255,.34);
+}
+
+/* Base link behavior */
+main a,
+footer a,
+.site-header a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+main a:not(.portal-card):not(.note-line):not(.archive-links a):not(.topic-link):not(.nav a) {
+  position: relative;
+  text-decoration: none;
+}
+
+main a:not(.portal-card):not(.note-line):not(.archive-links a):not(.topic-link):not(.nav a)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  opacity: .58;
+  transition: right var(--motion-mid) var(--ease-quiet), opacity var(--motion-fast) ease;
+}
+
+main a:not(.portal-card):not(.note-line):not(.archive-links a):not(.topic-link):not(.nav a):hover::after,
+main a:not(.portal-card):not(.note-line):not(.archive-links a):not(.topic-link):not(.nav a):focus-visible::after {
+  right: 0;
+  opacity: .95;
+}
+
+/* Primary nav: elegant split-line reveal */
+.nav-primary a {
+  position: relative;
+  padding: 6px 0;
+  color: var(--coal);
+  text-decoration: none !important;
+  transition: color var(--motion-fast) ease, transform var(--motion-fast) var(--ease-quiet);
+}
+
+.nav-primary a::before,
+.nav-primary a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width var(--motion-mid) var(--ease-drift);
+}
+
+.nav-primary a::before { right: 50%; }
+.nav-primary a::after { left: 50%; }
+
+.nav-primary a:hover,
+.nav-primary a:focus-visible {
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.nav-primary a:hover::before,
+.nav-primary a:hover::after,
+.nav-primary a:focus-visible::before,
+.nav-primary a:focus-visible::after {
+  width: 50%;
+}
+
+/* Topic rail: dot becomes a tiny lozenge, label shifts into focus */
+.topic-link {
+  transition:
+    color var(--motion-fast) ease,
+    transform var(--motion-fast) var(--ease-quiet),
+    letter-spacing var(--motion-mid) var(--ease-quiet);
+}
+
+.topic-link > span {
+  border-radius: 999px;
+  transform-origin: center;
+  transition:
+    width var(--motion-mid) var(--ease-drift),
+    opacity var(--motion-fast) ease,
+    transform var(--motion-mid) var(--ease-drift);
+}
+
+.topic-link:hover,
+.topic-link:focus-visible,
+.topic-link.is-active {
+  letter-spacing: .01em;
+}
+
+.topic-link:hover > span,
+.topic-link:focus-visible > span,
+.topic-link.is-active > span {
+  width: 13px;
+  transform: scaleY(.82);
+}
+
+.topic-link:hover::after,
+.topic-link:focus-visible::after,
+.topic-link.is-active::after {
+  opacity: .72;
+}
+
+/* Header brand: tiny architectural response */
+.brand {
+  transition: color var(--motion-fast) ease;
+}
+
+.brand-mark {
+  transition: transform var(--motion-mid) var(--ease-drift), opacity var(--motion-fast) ease;
+}
+
+.brand:hover .brand-mark,
+.brand:focus-visible .brand-mark {
+  transform: translateY(-2px) rotate(-2deg);
+  opacity: .82;
+}
+
+/* Note rows: reveal a quiet gutter line */
+.note-line {
+  position: relative;
+  transition:
+    transform var(--motion-mid) var(--ease-quiet),
+    background-color var(--motion-mid) ease,
+    padding-left var(--motion-mid) var(--ease-quiet);
+}
+
+.note-line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--motion-mid) var(--ease-drift);
+}
+
+.note-line:hover,
+.note-line:focus-visible {
+  transform: translateX(2px);
+  background: linear-gradient(90deg, rgba(176,138,62,.045), transparent 68%);
+}
+
+.note-line:hover::before,
+.note-line:focus-visible::before {
+  transform: scaleY(1);
+}
+
+.note-line:hover h3,
+.note-line:focus-visible h3 {
+  text-decoration: none;
+}
+
+.note-line h3 {
+  transition: transform var(--motion-mid) var(--ease-quiet);
+}
+
+.note-line:hover h3,
+.note-line:focus-visible h3 {
+  transform: translateX(2px);
+}
+
+/* Deep-dive rows: edge accent appears before content moves */
+.lane-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.lane-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--motion-mid) var(--ease-drift);
+}
+
+.lane-item:hover::before,
+.lane-item:focus-within::before {
+  transform: scaleY(1);
+}
+
+.lane-item > * {
+  transition: transform var(--motion-mid) var(--ease-quiet);
+}
+
+.lane-item:hover > *,
+.lane-item:focus-within > * {
+  transform: translateX(5px);
+}
+
+/* Bench items use category-aware micro motion */
+.bench-item {
+  position: relative;
+}
+
+.bench-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: var(--systems);
+  transition: width var(--motion-slow) var(--ease-drift);
+}
+
+.bench-item:hover::after,
+.bench-item:focus-within::after {
+  width: 100%;
+}
+
+.bench-item:nth-of-type(2)::after { background: var(--gold); }
+.bench-item:nth-of-type(3)::after { background: var(--health); }
+
+/* Archive links: arrow travels, rule follows */
+.archive-links a {
+  position: relative;
+  overflow: hidden;
+  transition:
+    background-color var(--motion-mid) ease,
+    padding-left var(--motion-mid) var(--ease-quiet),
+    padding-right var(--motion-mid) var(--ease-quiet);
+}
+
+.archive-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: width var(--motion-slow) var(--ease-drift);
+}
+
+.archive-links a:hover::after,
+.archive-links a:focus-visible::after {
+  width: 100%;
+}
+
+.archive-links a span {
+  transition: transform var(--motion-mid) var(--ease-drift), color var(--motion-fast) ease;
+}
+
+.archive-links a:hover span,
+.archive-links a:focus-visible span {
+  transform: translateX(7px);
+  color: var(--ink);
+}
+
+/* Portal cards: distinctive but restrained */
+.portal-card {
+  transform-origin: center bottom;
+  transition:
+    transform var(--motion-mid) var(--ease-drift),
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-mid) ease,
+    background-color var(--motion-mid) ease;
+}
+
+.portal-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  pointer-events: none;
+  transition: inset var(--motion-mid) var(--ease-drift), border-color var(--motion-mid) ease;
+}
+
+.portal-card:hover,
+.portal-card:focus-visible {
+  transform: translateY(-5px) rotate(.15deg);
+}
+
+.portal-card:hover::before,
+.portal-card:focus-visible::before {
+  inset: 7px;
+  border-color: rgba(23,23,23,.16);
+}
+
+.portal-card .portal-body h2 {
+  transition: transform var(--motion-mid) var(--ease-drift), letter-spacing var(--motion-mid) ease;
+}
+
+.portal-card:hover .portal-body h2,
+.portal-card:focus-visible .portal-body h2 {
+  transform: translateX(3px);
+  letter-spacing: -.045em;
+}
+
+.portal-card .portal-foot {
+  transition: transform var(--motion-mid) var(--ease-drift), opacity var(--motion-fast) ease;
+}
+
+.portal-card:hover .portal-foot,
+.portal-card:focus-visible .portal-foot {
+  transform: translateX(4px);
+}
+
+/* Work images: precise depth, never floaty */
+.thumb {
+  will-change: transform;
+}
+
+.artifact-visual,
+.bench-item-visual {
+  perspective: 900px;
+}
+
+.artifact-visual:hover .thumb,
+.bench-item-visual:hover .thumb {
+  transform: translateY(-4px) rotateX(.7deg) rotateY(-.7deg);
+  box-shadow: 0 14px 36px rgba(23,23,23,.06);
+}
+
+/* Global focus: visible but elegant */
+a:focus-visible {
+  outline: none;
+}
+
+.topic-link:focus-visible,
+.nav-primary a:focus-visible,
+.brand:focus-visible,
+.footer-links a:focus-visible {
+  box-shadow: none;
+}
+
+.portal-card:focus-visible,
+.note-line:focus-visible,
+.archive-links a:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+
+/* Footer becomes quieter until invited */
+.footer-links a {
+  position: relative;
+  text-decoration: none !important;
+}
+
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -3px;
+  height: 1px;
+  background: var(--gold);
+  transition: right var(--motion-mid) var(--ease-quiet);
+}
+
+.footer-links a:hover::after,
+.footer-links a:focus-visible::after {
+  right: 0;
+}
+
+/* Motion respect */
+@media (prefers-reduced-motion: reduce) {
+  .nav-primary a,
+  .topic-link,
+  .topic-link > span,
+  .brand-mark,
+  .note-line,
+  .note-line::before,
+  .note-line h3,
+  .lane-item::before,
+  .lane-item > *,
+  .bench-item::after,
+  .archive-links a,
+  .archive-links a::after,
+  .archive-links a span,
+  .portal-card,
+  .portal-card::before,
+  .portal-card .portal-body h2,
+  .portal-card .portal-foot,
+  .footer-links a::after {
+    transition: none !important;
+  }
+
+  .portal-card:hover,
+  .portal-card:focus-visible,
+  .artifact-visual:hover .thumb,
+  .bench-item-visual:hover .thumb,
+  .note-line:hover,
+  .note-line:focus-visible,
+  .nav-primary a:hover,
+  .nav-primary a:focus-visible,
+  .topic-link:hover,
+  .topic-link:focus-visible {
+    transform: none !important;
+  }
+}
