@@ -24,17 +24,28 @@ const {
     <div class="header-wrap">
       <div class="shell">
         <header class="site-header">
-          <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>imhotep</a>
-          <nav class="nav" aria-label="Primary">
-            <a href="/#work">work</a>
+          <div class="header-left">
+            <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>imhotep</a>
+            <nav class="topic-rail" aria-label="Browse by topic">
+              <a class="topic-link topic-ai" data-topic="ai" href="/field-notes?topic=ai"><span></span>AI</a>
+              <a class="topic-link topic-design" data-topic="design" href="/field-notes?topic=design"><span></span>Design</a>
+              <a class="topic-link topic-supply" data-topic="supply-chain" href="/field-notes?topic=supply-chain"><span></span>Supply Chain</a>
+              <a class="topic-link topic-health" data-topic="healthcare" href="/field-notes?topic=healthcare"><span></span>Healthcare</a>
+              <a class="topic-link topic-engineering" data-topic="engineering" href="/field-notes?topic=engineering"><span></span>Engineering</a>
+            </nav>
+          </div>
+
+          <nav class="nav nav-primary" aria-label="Primary">
+            <a href="/#deep-dives">work</a>
             <a href="/field-notes">writing</a>
-            <a href="/#systems">systems</a>
             <a href="/identity">about</a>
           </nav>
         </header>
       </div>
     </div>
+
     <main><slot /></main>
+
     <div class="shell">
       <footer class="footer">
         <div class="footer-main">
@@ -42,10 +53,20 @@ const {
             <div class="footer-person">Vishnu Unnikrishnan</div>
             <div class="footer-role">work · systems · field notes</div>
           </div>
-          <div class="footer-links"><a href="/#work">work</a><a href="/field-notes">writing</a><a href="/identity">about</a></div>
+          <div class="footer-links"><a href="/#deep-dives">work</a><a href="/field-notes">writing</a><a href="/identity">about</a></div>
         </div>
         <div class="hieroglyph-signature" title="Imhotep signature" aria-label="Imhotep hieroglyphic signature">𓇋𓇋𓅓𓊵𓏏𓊪</div>
       </footer>
     </div>
+
+    <script is:inline>
+      (() => {
+        const activeTopic = new URLSearchParams(window.location.search).get('topic');
+        if (!activeTopic) return;
+        document.querySelectorAll('.topic-link').forEach((link) => {
+          if (link.dataset.topic === activeTopic) link.classList.add('is-active');
+        });
+      })();
+    </script>
   </body>
 </html>
