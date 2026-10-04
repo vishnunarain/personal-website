@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const takes = [
+  ['Design', 'Dashboards should expose decisions, not backend state.'],
+  ['Engineering', 'The sophisticated solution is not automatically the senior solution.'],
+  ['AI', 'Agents become useful when review and context are designed as carefully as prompts.'],
+  ['Teams', 'Taste is teachable when a team has vocabulary for why something works.']
+];
+---
+<BaseLayout title="imho — imhotep" description="Opinions, setup, models, ideas, and working preferences.">
+  <div class="shell side-page imho-page">
+    <header class="side-page-head">
+      <div><span class="console-label">← imho</span><h1>Things I think, use, and keep changing my mind about.</h1></div>
+      <div class="side-key">press → for imhotep</div>
+    </header>
+
+    <section class="take-feed">
+      {takes.map(([topic,take], i) => (
+        <article class="take">
+          <div class="take-meta"><span>{String(i+1).padStart(2,'0')}</span><span>{topic}</span></div>
+          <p>{take}</p>
+        </article>
+      ))}
+    </section>
+
+    <section class="imho-grid">
+      <article id="models" class="imho-panel">
+        <div class="console-label">models / currently useful</div>
+        <h2>How I choose models</h2>
+        <p>Use the cheapest model that can safely own the task. Escalate reasoning depth when ambiguity, architecture, or irreversible decisions increase.</p>
+      </article>
+      <article id="setup" class="imho-panel">
+        <div class="console-label">setup / tools</div>
+        <h2>The working stack</h2>
+        <p>Mac, terminal-first workflows, VS Code, Claude Code, Codex, GitHub, Java, Vue, PostgreSQL, Kafka — with tools earning their place through reduced friction.</p>
+      </article>
+      <article class="imho-panel">
+        <div class="console-label">ideas / unfinished</div>
+        <h2>Things on the bench</h2>
+        <p>AI interns that can grow, calm supply-chain decision systems, engineering taste as a team capability, and tools that make complex work legible.</p>
+      </article>
+    </section>
+  </div>
+</BaseLayout>
