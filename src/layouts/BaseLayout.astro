@@ -5,10 +5,15 @@ interface Props {
   title?: string;
   description?: string;
 }
+
 const {
   title = 'imhotep — Vishnu Unnikrishnan',
-  description = 'Work, systems, and field notes by Vishnu Unnikrishnan.'
+  description = 'Work, systems, opinions, and field notes by Vishnu Unnikrishnan.'
 } = Astro.props;
+
+const path = Astro.url.pathname;
+const isImho = path.startsWith('/imho');
+const isTep = path.startsWith('/tep');
 ---
 <!doctype html>
 <html lang="en">
@@ -23,23 +28,21 @@ const {
   <body>
     <div class="header-wrap">
       <div class="shell">
-        <header class="site-header">
-          <div class="header-left">
-            <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>imhotep</a>
-            <nav class="topic-rail" aria-label="Browse by topic">
-              <a class="topic-link topic-ai" data-topic="ai" href="/field-notes?topic=ai"><span></span>AI</a>
-              <a class="topic-link topic-design" data-topic="design" href="/field-notes?topic=design"><span></span>Design</a>
-              <a class="topic-link topic-supply" data-topic="supply-chain" href="/field-notes?topic=supply-chain"><span></span>Supply Chain</a>
-              <a class="topic-link topic-health" data-topic="healthcare" href="/field-notes?topic=healthcare"><span></span>Healthcare</a>
-              <a class="topic-link topic-engineering" data-topic="engineering" href="/field-notes?topic=engineering"><span></span>Engineering</a>
-            </nav>
-          </div>
+        <header class="site-header nav-axis">
+          <a class:list={['axis-link','axis-left', {active:isImho}]} href="/imho" aria-label="Go to IMHO">
+            <span class="axis-key">←</span>
+            <span>imho</span>
+          </a>
 
-          <nav class="nav nav-primary" aria-label="Primary">
-            <a href="/#deep-dives">work</a>
-            <a href="/field-notes">writing</a>
-            <a href="/identity">about</a>
-          </nav>
+          <a class="axis-brand" href="/" aria-label="Go to imhotep home">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>imhotep</span>
+          </a>
+
+          <a class:list={['axis-link','axis-right', {active:isTep}]} href="/tep" aria-label="Go to TEP">
+            <span>tep</span>
+            <span class="axis-key">→</span>
+          </a>
         </header>
       </div>
     </div>
@@ -53,7 +56,7 @@ const {
             <div class="footer-person">Vishnu Unnikrishnan</div>
             <div class="footer-role">work · systems · field notes</div>
           </div>
-          <div class="footer-links"><a href="/#deep-dives">work</a><a href="/field-notes">writing</a><a href="/identity">about</a></div>
+          <div class="footer-links"><a href="/imho">imho</a><a href="/">imhotep</a><a href="/tep">tep</a></div>
         </div>
         <div class="hieroglyph-signature" title="Imhotep signature" aria-label="Imhotep hieroglyphic signature">𓇋𓇋𓅓𓊵𓏏𓊪</div>
       </footer>
@@ -61,10 +64,21 @@ const {
 
     <script is:inline>
       (() => {
-        const activeTopic = new URLSearchParams(window.location.search).get('topic');
-        if (!activeTopic) return;
-        document.querySelectorAll('.topic-link').forEach((link) => {
-          if (link.dataset.topic === activeTopic) link.classList.add('is-active');
+        const path = window.location.pathname;
+        const targetFor = (key) => {
+          if (path.startsWith('/imho')) return key === 'ArrowRight' ? '/' : null;
+          if (path.startsWith('/tep')) return key === 'ArrowLeft' ? '/' : null;
+          return key === 'ArrowLeft' ? '/imho' : key === 'ArrowRight' ? '/tep' : null;
+        };
+
+        window.addEventListener('keydown', (event) => {
+          const tag = document.activeElement?.tagName?.toLowerCase();
+          if (tag === 'input' || tag === 'textarea' || document.activeElement?.isContentEditable) return;
+          const target = targetFor(event.key);
+          if (!target) return;
+          event.preventDefault();
+          document.body.classList.add(event.key === 'ArrowLeft' ? 'page-leave-left' : 'page-leave-right');
+          window.setTimeout(() => { window.location.href = target; }, 110);
         });
       })();
     </script>
