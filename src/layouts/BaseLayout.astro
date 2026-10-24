@@ -1,86 +1,74 @@
 ---
-import '../styles/global.css';
-
+import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
 }
-
 const {
-  title = 'imhotep — Vishnu Unnikrishnan',
-  description = 'Work, systems, opinions, and field notes by Vishnu Unnikrishnan.'
+  title = "imhotep — Notes from a restless mind",
+  description = "An illustrated journal about building things, thinking across disciplines, and occasionally checking whether the Nile still works. By Vishnu Unnikrishnan.",
 } = Astro.props;
-
 const path = Astro.url.pathname;
-const isImho = path.startsWith('/imho');
-const isTep = path.startsWith('/tep');
 ---
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f6f3ec" />
-    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#faf7ef" />
     <title>{title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <div class="header-wrap">
-      <div class="shell">
-        <header class="site-header nav-axis">
-          <a class:list={['axis-link','axis-left', {active:isImho}]} href="/imho" aria-label="Go to IMHO">
-            <span class="axis-key">←</span>
-            <span>imho</span>
-          </a>
-
-          <a class="axis-brand" href="/" aria-label="Go to imhotep home">
-            <span class="brand-mark" aria-hidden="true"></span>
-            <span>imhotep</span>
-          </a>
-
-          <a class:list={['axis-link','axis-right', {active:isTep}]} href="/tep" aria-label="Go to TEP">
-            <span>tep</span>
-            <span class="axis-key">→</span>
-          </a>
-        </header>
+    <a class="skip-link" href="#main">
+      Skip to the story
+    </a>
+    <header class="masthead shell">
+      <div class="masthead-top">
+        <span>AN INDEPENDENT JOURNAL</span>
+        <a href="/identity">BY VISHNU UNNIKRISHNAN ↗</a>
       </div>
-    </div>
-
-    <main><slot /></main>
-
-    <div class="shell">
-      <footer class="footer">
-        <div class="footer-main">
-          <div>
-            <div class="footer-person">Vishnu Unnikrishnan</div>
-            <div class="footer-role">work · systems · field notes</div>
-          </div>
-          <div class="footer-links"><a href="/imho">imho</a><a href="/">imhotep</a><a href="/tep">tep</a></div>
+      <div class="nameplate">
+        <a href="/" aria-label="imhotep home">
+          imhotep<span class="brand-dot">.</span>
+        </a>
+        <p>
+          A restless mind.
+          <br />A very long to-do list.
+        </p>
+      </div>
+      <nav aria-label="Main navigation">
+        <div class="nav-links">
+          <a href="/" aria-current={path === "/" ? "page" : undefined}>
+            Front page
+          </a>
+          <a
+            href="/field-notes"
+            aria-current={path.startsWith("/field-notes") ? "page" : undefined}
+          >
+            The journal
+          </a>
+          <a href="/imho" aria-current={path === "/imho" ? "page" : undefined}>
+            Marginalia
+          </a>
+          <a href="/tep" aria-current={path === "/tep" ? "page" : undefined}>
+            The work
+          </a>
         </div>
-        <div class="hieroglyph-signature" title="Imhotep signature" aria-label="Imhotep hieroglyphic signature">𓇋𓇋𓅓𓊵𓏏𓊪</div>
-      </footer>
-    </div>
-
-    <script is:inline>
-      (() => {
-        const path = window.location.pathname;
-        const targetFor = (key) => {
-          if (path.startsWith('/imho')) return key === 'ArrowRight' ? '/' : null;
-          if (path.startsWith('/tep')) return key === 'ArrowLeft' ? '/' : null;
-          return key === 'ArrowLeft' ? '/imho' : key === 'ArrowRight' ? '/tep' : null;
-        };
-
-        window.addEventListener('keydown', (event) => {
-          const tag = document.activeElement?.tagName?.toLowerCase();
-          if (tag === 'input' || tag === 'textarea' || document.activeElement?.isContentEditable) return;
-          const target = targetFor(event.key);
-          if (!target) return;
-          event.preventDefault();
-          document.body.classList.add(event.key === 'ArrowLeft' ? 'page-leave-left' : 'page-leave-right');
-          window.setTimeout(() => { window.location.href = target; }, 110);
-        });
-      })();
-    </script>
+        <span class="nav-aside">ENGINEERING · DESIGN · EVERYTHING ELSE</span>
+      </nav>
+    </header>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="shell footer">
+      <a class="footer-brand" href="/">
+        imhotep.
+      </a>
+      <p>Made by Vishnu. Blame the scribe for the rest.</p>
+      <a href="/identity">The person behind the papyrus ↗</a>
+    </footer>
   </body>
 </html>

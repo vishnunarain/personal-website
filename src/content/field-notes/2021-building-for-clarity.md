@@ -1,6 +1,6 @@
 ---
 title: "Building for clarity"
-description: "A placeholder for an older idea, deliberately added later without losing its original chronology."
+description: "Publication dates, repository history, and why good systems keep different ideas separate."
 publishedAt: 2021-06-18
 originallyWrittenAt: 2021-06-18
 updatedAt: 2026-10-03

@@ -1,101 +1,104 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import SystemThumb from '../components/SystemThumb.astro';
-import { getCollection } from 'astro:content';
-
-const notes = (await getCollection('fieldNotes', ({ data }) => !data.draft))
-  .sort((a,b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
-const featured = notes.slice(0,3);
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+const notes = (
+  await getCollection("fieldNotes", ({ data }) => !data.draft)
+).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const lead = notes.find((note) => note.data.featured) ?? notes[0];
+const rest = notes.filter((note) => note.id !== lead?.id);
 ---
+
 <BaseLayout>
-  <div class="shell home-console">
-    <section class="console-frame">
-      <aside class="console-links">
-        <div class="console-label">start here</div>
-        <a href="/tep#decision-systems"><span>01</span>Decision systems</a>
-        <a href="/field-notes"><span>02</span>Engineering leadership</a>
-        <a href="/imho#models"><span>03</span>Models I reach for</a>
-        <a href="/imho#setup"><span>04</span>Setup + stack</a>
-        <div class="console-hint">← opinions &nbsp;&nbsp; work →</div>
-      </aside>
-
-      <section class="console-profile">
-        <div class="console-command">$ whoami --working-set</div>
-        <h1>Vishnu Unnikrishnan</h1>
-        <p class="console-role">Engineering leader · systems builder · product-minded technologist</p>
-        <p class="console-copy">
-          I work on software where the hard part is usually not a screen or a service in isolation,
-          but making complex systems easier to understand, operate, and change.
-        </p>
-
-        <div class="console-tags">
-          <span>supply chain</span><span>healthcare</span><span>systems</span><span>AI</span><span>design</span>
+  <div class="shell front-page">
+    {lead && (
+      <article class="lead-story">
+        <div class="issue-line">
+          <span>
+            <i></i> THE IMHOTEP DISPATCH
+          </span>
+          <span>FIELD NOTES FROM AN UNFINISHED WORLD</span>
         </div>
-
-        <div class="console-actions">
-          <a class="console-primary" href="/tep">inspect the work <span>→</span></a>
-          <a href="/imho">browse opinions + setup <span>←</span></a>
+        <a
+          class="cover-link"
+          href={`/field-notes/${lead.id}/`}
+          aria-label={`Read ${lead.data.title}`}
+        >
+          <div class="cover-art">
+            <img
+              src={lead.data.cover || "/images/imhotep-nile.webp"}
+              width="1536"
+              height="1024"
+              alt={lead.data.coverAlt || "An illustrated dispatch from Imhotep"}
+              fetchpriority="high"
+            />
+            <span class="cover-stamp">
+              EST. A VERY
+              <br />
+              LONG TIME AGO
+            </span>
+          </div>
+        </a>
+        <div class="lead-copy">
+          <div class="story-meta">
+            <span>01 / THE POLYMATH PROBLEM</span>
+            <span>AN ILLUSTRATED FABLE · 3 MIN READ</span>
+          </div>
+          <h1>
+            <a href={`/field-notes/${lead.id}/`}>{lead.data.title}</a>
+          </h1>
+          <div class="lead-bottom">
+            <p>{lead.data.description}</p>
+            <a class="read-link" href={`/field-notes/${lead.id}/`}>
+              Read the dispatch <span>↗</span>
+            </a>
+          </div>
         </div>
-      </section>
-
-      <aside class="portrait-panel" aria-label="Portrait placeholder">
-        <div class="portrait-vector">
-          <div class="portrait-monogram">VU</div>
-          <svg viewBox="0 0 240 300" aria-hidden="true">
-            <path d="M44 254c8-57 34-88 76-94 42 6 69 37 76 94" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <ellipse cx="120" cy="92" rx="49" ry="60" fill="none" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M78 91c14-8 27-12 42-12 18 0 33 5 44 13" fill="none" stroke="currentColor" stroke-width="1"/>
-            <path d="M96 111h48M106 131h28" fill="none" stroke="currentColor" stroke-width="1"/>
-          </svg>
-        </div>
-        <div class="portrait-note">vector portrait slot</div>
-      </aside>
-    </section>
-
-    <section class="impact-rack">
-      <div class="impact-intro">
-        <div class="console-label">impact / evidence</div>
-        <h2>Read the work, then inspect the numbers.</h2>
+      </article>
+    )}
+    <section class="below-fold" aria-labelledby="more-title">
+      <div class="section-heading">
+        <h2 id="more-title">While the mortar dries</h2>
+        <a href="/field-notes">All writing ↗</a>
       </div>
-      <div class="impact-cell">
-        <strong>15</strong>
-        <span>years building software</span>
-      </div>
-      <div class="impact-cell impact-pending">
-        <strong>↗</strong>
-        <span>scale / outcome metric</span>
-      </div>
-      <div class="impact-cell impact-pending">
-        <strong>↗</strong>
-        <span>customer / team metric</span>
-      </div>
-    </section>
-
-    <section class="home-reading">
-      <div class="home-reading-head">
-        <span>read next</span>
-        <a href="/field-notes">all field notes →</a>
-      </div>
-      <div class="home-reading-list">
-        {featured.map((note, index) => (
-          <a href={`/field-notes/${note.id}/`}>
-            <span>0{index + 1}</span>
-            <div><strong>{note.data.title}</strong><small>{note.data.description}</small></div>
-            <span>↗</span>
-          </a>
+      <div class="reading-grid">
+        {rest.map((note, i) => (
+          <article class="story-preview">
+            <span class="eyebrow">
+              {String(i + 2).padStart(2, "0")} /{" "}
+              {note.data.tags[0] || "FIELD NOTE"}
+            </span>
+            <h3>
+              <a href={`/field-notes/${note.id}/`}>{note.data.title}</a>
+            </h3>
+            <p>{note.data.description}</p>
+            <a class="text-link" href={`/field-notes/${note.id}/`}>
+              Read the note ↗
+            </a>
+          </article>
         ))}
+        <aside class="editor-note">
+          <span class="eyebrow">A NOTE FROM THE SCRIBE</span>
+          <h3>
+            One head.
+            <br />
+            Too many hats.
+          </h3>
+          <p>
+            Engineer, builder, incurably curious. This is a place to think out
+            loud about the things we build—and why.
+          </p>
+          <a href="/identity">Meet the modern-day culprit ↗</a>
+        </aside>
       </div>
     </section>
-
-    <section class="direction-cards">
-      <a href="/imho" class="direction-card direction-imho">
-        <span>←</span>
-        <div><small>left / imho</small><h2>Opinions, setup, models, ideas.</h2></div>
-      </a>
-      <a href="/tep" class="direction-card direction-tep">
-        <div><small>right / tep</small><h2>Work, case studies, writing.</h2></div>
-        <span>→</span>
-      </a>
-    </section>
+    <div class="closing-note">
+      <span>☀</span>
+      <p>
+        Tomorrow: inventing a calendar.
+        <br />
+        <em>Apparently “soon” is not a delivery date.</em>
+      </p>
+      <a href="/imho">More from the margins →</a>
+    </div>
   </div>
 </BaseLayout>
