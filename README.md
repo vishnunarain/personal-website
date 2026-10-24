@@ -32,3 +32,11 @@ The repository is Netlify-ready:
 - publish directory: `dist`
 
 Before production launch, replace `https://example.com` in `astro.config.mjs` with the final domain.
+
+## Editorial design
+
+The front page leads with the newest published featured field note, with the newest note as fallback. Set `featured: true` to promote a story. Optional `cover` and `coverAlt` fields supply its illustration. Existing `/imho` and `/tep` routes remain available as Marginalia and The work.
+
+The Imhotep character is a fictional stick-figure polymath. The inaugural dispatch is an invented fable, not a historical account. The cover is a static illustration in the style of a colourful history animation, with restrained hover motion and reduced-motion support.
+
+Artwork: generated using the built-in image generator. Brief: colourful hand-drawn editorial cartoon of stick-figure Imhotep holding a long blueprint in a dry Nile riverbed, a step pyramid under construction, stranded boat and waiting builders; turquoise, ochre, coral and cream; no text. Optimized asset: `public/images/imhotep-nile.webp`.
